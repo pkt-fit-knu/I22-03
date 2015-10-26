@@ -1,0 +1,52 @@
+create database base;
+
+\connect base;
+
+create table Pol
+(force_pol integer primary key,
+pol_value varchar(10) not null);
+
+create table ippodrom
+(ippodrom_id integer primary key,
+ippodrom_name varchar(20) unique not null);
+
+create table gokey
+(gokey_id integer primary key,
+gokey_name varchar(20) not null,
+gokey_address varchar(40) not null,
+gokey_age integer check (gokey_age>=18),
+gokey_reiting integer check (gokey_reiting>=0));
+
+create table vladel
+(vladel_id integer primary key,
+vladel_name varchar(20) not null,
+vladel_address varchar(40) not null,
+vladel_telephon varchar(20) not null);
+
+create table forces
+(force_id integer primary key,
+force_name varchar(20) unique not null,
+force_pol integer,
+force_age integer not null,
+vladel_id integer,
+FOREIGN KEY (force_pol) REFERENCES pol,
+FOREIGN KEY (vladel_id) REFERENCES vladel);
+
+create table zabeg
+(zabeg_id integer primary key,
+ zabeg_data date not null,
+ zabeg_time varchar(20) not null,
+ ippodrom_id integer,
+ zabeg_name varchar(20),
+ FOREIGN KEY (ippodrom_id) REFERENCES ippodrom);
+
+create table rezults_zabeg
+(rez_id integer primary key,
+zabeg_id integer,
+force_id integer,
+gokey_id integer,
+rezult integer not null,
+rez_time real not null,
+FOREIGN KEY(force_id) REFERENCES forces,
+FOREIGN KEY(gokey_id) REFERENCES gokey,
+FOREIGN KEY(zabeg_id) REFERENCES zabeg);
